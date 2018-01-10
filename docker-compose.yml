@@ -1,0 +1,81 @@
+version: '2'
+services:
+  flask-module:
+    build: ./flaskModule
+    image: flask-module
+    container_name: flask-view
+    ports:
+    - "30:5000"
+    volumes:
+    - ./flaskModule:/code
+    network_mode: "test-network"
+    environment:
+      BROKER_NAME: "rabbit-broker"
+      BROKER_USERNAME: "guest"
+      BROKER_PASSWORD: "guest"
+  rabbit-broker:
+    image: rabbitmq:3-management
+    container_name: rabbit-broker
+    ports:
+    - "31:15672"
+    hostname: "my-rabbit"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    network_mode: "test-network"
+  base-mysql:
+    image: mysql
+    container_name: base-mysql
+    network_mode: "test-network"
+    ports:
+    - "32:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "quan"
+  user-module:
+    build: ./userModule
+    image: user-module
+    container_name: user-module
+    network_mode: "test-network"
+    volumes:
+    - ./userModule:/code
+    command: bash -c "chmod +x wait-for-it.sh && ./wait-for-it.sh rabbit-broker:31 -- nameko run service --broker amqp://guest:guest@rabbit-broker"
+    depends_on:
+    - rabbit-broker
+    - base-mysql
+    environment:
+      MYSQL_SERVER: "base-mysql"
+      MYSQL_DATABASE: "demodb"
+      MYSQL_USERNAME: "root"
+      MYSQL_PASSWORD: "quan"
+  movie-module:
+    build: ./moviesModule
+    image: movie-module
+    container_name: movie-module
+    network_mode: "test-network"
+    volumes:
+    - ./moviesModule:/code
+    command: bash -c "chmod +x wait-for-it.sh && ./wait-for-it.sh rabbit-broker:31 -- nameko run service --broker amqp://guest:guest@rabbit-broker"
+    depends_on:
+    - rabbit-broker
+    - base-mysql
+    environment:
+      MYSQL_SERVER: "base-mysql"
+      MYSQL_DATABASE: "demodb"
+      MYSQL_USERNAME: "root"
+      MYSQL_PASSWORD: "quan"
+  booking-module:
+    build: ./bookingsModule
+    image: booking-module
+    container_name: booking-module
+    network_mode: "test-network"
+    volumes:
+    - ./bookingsModule:/code
+    command: bash -c "chmod +x wait-for-it.sh && ./wait-for-it.sh rabbit-broker:31 -- nameko run service --broker amqp://guest:guest@rabbit-broker"
+    depends_on:
+    - rabbit-broker
+    - base-mysql
+    environment:
+      MYSQL_SERVER: "base-mysql"
+      MYSQL_DATABASE: "demodb"
+      MYSQL_USERNAME: "root"
+      MYSQL_PASSWORD: "quan"
