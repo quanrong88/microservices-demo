@@ -4,13 +4,13 @@ It's a simple application with microservices architecture.
 
 ### Installing
 
-1. Install [Docker](https://docs.docker.com)
-2. Change directory to the project root forder.
-3.  Run this command in command line to run project
+* Install [Docker](https://docs.docker.com)
+* Change directory to the project root forder.
+*  Run this command in command line to run project
 ```
 $ docker-compose up
 ```
-4. Create project database using following commands:
+* Create project database using following commands:
 ```
 $ docker exec -it base-mysql bash
 # mysql -u root -p quan
@@ -31,7 +31,7 @@ mysql>
 mysql> CREATE DATABASE demodb;
 Query OK, 1 row affected (0.00 sec)
 ```
-5. Create user table using following commands:
+* Create user table using following commands:
 ```
 $ docker exec -it user-module bash
 # python
@@ -42,7 +42,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> from database import engine, metadata
 >>> metadata.create_all(engine)
 ```
-6. Create movie table using following commands:
+* Create movie table using following commands:
 ```
 $ docker exec -it movie-module bash
 # python
@@ -53,7 +53,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> from database import engine, metadata
 >>> metadata.create_all(engine)
 ```
-7. Create bookings table using following commands:
+* Create bookings table using following commands:
 ```
 $ docker exec -it booking-module bash
 # python
@@ -64,7 +64,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> from database import engine, metadata
 >>> metadata.create_all(engine)
 ```
-8. Open web brower, type http://localhost:30/api/
+* Open web brower, type http://localhost:30/api/
 
 ### Build With
 
@@ -74,4 +74,3 @@ Type "help", "copyright", "credits" or "license" for more information.
 * [SQLAlchemy](https://www.sqlalchemy.org) is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL.
 * [marshmallow](https://github.com/marshmallow-code/marshmallow) is an ORM/ODM/framework-agnostic library for converting complex datatypes, such as objects, to and from native Python datatypes.
 * [pymysql](https://github.com/PyMySQL/PyMySQL) is pure Python MySQL Client.
-
