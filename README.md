@@ -1,6 +1,6 @@
 # Movie Booking App
 
-It's a simple application with microservices architecture.
+It's a simple application with microservices architecture. More detail in [this tutorial](https://quanrong88.github.io/2018/01/15/Building-microservices-using-Flask-RestPlus-Swagger-UI-RabbitMQ-and-Nameko/) 
 
 ### Installing
 
