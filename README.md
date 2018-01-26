@@ -1,4 +1,4 @@
-Movie Booking App
+# Movie Booking App
 
 It's a simple application with microservices architecture.
 
