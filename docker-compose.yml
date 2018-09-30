@@ -13,6 +13,11 @@ services:
       BROKER_NAME: "rabbit-broker"
       BROKER_USERNAME: "guest"
       BROKER_PASSWORD: "guest"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:35
+        tag: flask.access
   rabbit-broker:
     image: rabbitmq:3-management
     container_name: rabbit-broker

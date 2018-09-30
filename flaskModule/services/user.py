@@ -4,16 +4,19 @@ from restplus import api
 from nameko.standalone.rpc import ClusterRpcProxy
 from serializers import user_parser
 from services import CONFIG
+import sys
 
 ns = api.namespace('user/', description='Operations related to user')
 
 @ns.route('/')
 class showListUsers(Resource):
     def get(self):
+        sys.stdout.write('Request users list\n')
         with ClusterRpcProxy(CONFIG) as rpc:
             return rpc.userService.list()
     @api.expect(user_parser)
     def post(self):
+        sys.stdout.write('Create new user\n')
         with ClusterRpcProxy(CONFIG) as rpc:
             args = user_parser.parse_args()
             rpc.userService.createNewUser(args)
@@ -22,10 +25,12 @@ class showListUsers(Resource):
 @ns.route('/<int:user_id>')
 class showUser(Resource):
     def get(self,user_id):
+        sys.stdout.write('Get user detail\n')
         with ClusterRpcProxy(CONFIG) as rpc:
             return rpc.userService.getUserByName(user_id)
     @api.expect(user_parser)
     def put(self,user_id):
+        sys.stdout.write('Edit user detail\n')
         with ClusterRpcProxy(CONFIG) as rpc:
             args = user_parser.parse_args()
             rpc.userService.updateUser(user_id, args)
@@ -37,6 +42,7 @@ class showUser(Resource):
 @ns.route('/<string:user_id>/Bookings/')
 class showBookingsForUsername(Resource):
     def get(self,user_id):
+        sys.stdout.write('Get bookings list of user\n')
         with ClusterRpcProxy(CONFIG) as rpc:
             userBookings = rpc.bookingsService.getByUserId(user_id)
             results = []
