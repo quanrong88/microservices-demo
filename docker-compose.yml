@@ -52,6 +52,11 @@ services:
       MYSQL_DATABASE: "demodb"
       MYSQL_USERNAME: "root"
       MYSQL_PASSWORD: "quan"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:35
+        tag: users.access
   movie-module:
     build: ./moviesModule
     image: movie-module
@@ -68,6 +73,11 @@ services:
       MYSQL_DATABASE: "demodb"
       MYSQL_USERNAME: "root"
       MYSQL_PASSWORD: "quan"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:35
+        tag: movies.access
   booking-module:
     build: ./bookingsModule
     image: booking-module
@@ -84,3 +94,8 @@ services:
       MYSQL_DATABASE: "demodb"
       MYSQL_USERNAME: "root"
       MYSQL_PASSWORD: "quan"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:35
+        tag: bookings.access
