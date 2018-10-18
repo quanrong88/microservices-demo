@@ -28,6 +28,11 @@ services:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
     network_mode: "test-network"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:35
+        tag: rabbitmq.access
   base-mysql:
     image: mysql
     container_name: base-mysql
@@ -36,6 +41,11 @@ services:
     - "32:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "quan"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:35
+        tag: mysql.access
   user-module:
     build: ./userModule
     image: user-module
