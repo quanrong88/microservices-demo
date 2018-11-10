@@ -18,6 +18,8 @@ services:
       options:
         fluentd-address: localhost:35
         tag: flask.access
+    depends_on:
+    - log-module
   rabbit-broker:
     image: rabbitmq:3-management
     container_name: rabbit-broker
@@ -33,6 +35,8 @@ services:
       options:
         fluentd-address: localhost:35
         tag: rabbitmq.access
+    depends_on:
+    - log-module
   base-mysql:
     image: mysql
     container_name: base-mysql
@@ -46,6 +50,8 @@ services:
       options:
         fluentd-address: localhost:35
         tag: mysql.access
+    depends_on:
+    - log-module
   user-module:
     build: ./userModule
     image: user-module
@@ -57,6 +63,7 @@ services:
     depends_on:
     - rabbit-broker
     - base-mysql
+    - log-module
     environment:
       MYSQL_SERVER: "base-mysql"
       MYSQL_DATABASE: "demodb"
@@ -78,6 +85,7 @@ services:
     depends_on:
     - rabbit-broker
     - base-mysql
+    - log-module
     environment:
       MYSQL_SERVER: "base-mysql"
       MYSQL_DATABASE: "demodb"
@@ -99,6 +107,7 @@ services:
     depends_on:
     - rabbit-broker
     - base-mysql
+    - log-module
     environment:
       MYSQL_SERVER: "base-mysql"
       MYSQL_DATABASE: "demodb"
@@ -109,3 +118,36 @@ services:
       options:
         fluentd-address: localhost:35
         tag: bookings.access
+  log-module:
+    build: ./fluentd
+    image: my-fluentd
+    container_name: log-module
+    network_mode: "test-network"
+    ports:
+    - "35:24224"
+    - "35:24224/udp"
+    volumes:
+    - ./fluentd:/fluentd/etc
+    environment:
+      FLUENTD_CONF: "fluentd.conf"
+    depends_on:
+    - search-module
+  search-module:
+    image: elasticsearch
+    container_name: search-module
+    network_mode: "test-network"
+    ports:
+    - "33:9200"
+    - "34:9300"
+    environment:
+      discovery.type: "single-node"
+  kibana-module:
+    image: kibana
+    container_name: kibana-module
+    network_mode: "test-network"
+    ports:
+    - "36:5601"
+    environment:
+      ELASTICSEARCH_URL: "http://search-module:9200"
+    depends_on:
+    - search-module
