@@ -74,6 +74,7 @@ services:
       options:
         fluentd-address: localhost:35
         tag: users.access
+    restart: on-failure
   movie-module:
     build: ./moviesModule
     image: movie-module
@@ -96,6 +97,7 @@ services:
       options:
         fluentd-address: localhost:35
         tag: movies.access
+    restart: on-failure
   booking-module:
     build: ./bookingsModule
     image: booking-module
@@ -118,6 +120,7 @@ services:
       options:
         fluentd-address: localhost:35
         tag: bookings.access
+    restart: on-failure
   log-module:
     build: ./fluentd
     image: my-fluentd
