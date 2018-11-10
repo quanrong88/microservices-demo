@@ -154,3 +154,12 @@ services:
       ELASTICSEARCH_URL: "http://search-module:9200"
     depends_on:
     - search-module
+  beat-module:
+    build: ./metricbeat
+    image: docker.elastic.co/beats/metricbeat:6.4.2
+    container_name: beat-module
+    user: root
+    network_mode: "test-network"
+    volumes:
+    - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+    - /var/run/docker.sock:/var/run/docker.sock
