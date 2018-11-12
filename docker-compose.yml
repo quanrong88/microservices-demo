@@ -47,6 +47,7 @@ services:
       MYSQL_DATABASE: "demodb"
       MYSQL_USERNAME: "root"
       MYSQL_PASSWORD: "quan"
+    restart: on-failure
   movie-module:
     build: ./moviesModule
     image: movie-module
@@ -63,6 +64,7 @@ services:
       MYSQL_DATABASE: "demodb"
       MYSQL_USERNAME: "root"
       MYSQL_PASSWORD: "quan"
+    restart: on-failure
   booking-module:
     build: ./bookingsModule
     image: booking-module
@@ -79,3 +81,4 @@ services:
       MYSQL_DATABASE: "demodb"
       MYSQL_USERNAME: "root"
       MYSQL_PASSWORD: "quan"
+    restart: on-failure
